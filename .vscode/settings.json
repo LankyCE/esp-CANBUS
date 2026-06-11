@@ -1,0 +1,30 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.openOcdConfigs": [
+    "board/esp32s3-builtin.cfg"
+  ],
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32s3"
+  },
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=${workspaceFolder}/build"
+  ],
+  "idf.flashType": "UART",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell (ESP-IDF)": {
+      "source": "PowerShell",
+      "args": [
+        "-NoExit",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$repo=(Get-Location).Path; $tools=Join-Path (Split-Path $repo -Parent) '.espressif'; $idf=@(Get-ChildItem -Path $tools -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending | ForEach-Object { Join-Path $_.FullName 'esp-idf' } | Where-Object { Test-Path $_ }) | Select-Object -First 1; if (-not $idf) { Write-Error \"ESP-IDF not found under $tools\"; return }; $env:IDF_TOOLS_PATH=$tools; $env:IDF_PATH=$idf; . (Join-Path $idf 'export.ps1'); $env:IDF_CCACHE_ENABLE='0'"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell (ESP-IDF)",
+  "idf.currentSetup": "<PATH_TO>\\.espressif\\v5.5.3\\esp-idf",
+  "idf.portWin": "COM5"
+}

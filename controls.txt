@@ -1,0 +1,19 @@
+Flash helper usage
+
+Build + flash + monitor (auto port):
+.\flash.ps1
+
+Build + flash + monitor (specific port):
+.\flash.ps1 -Port COM6
+
+Skip build, flash + monitor:
+.\flash.ps1 -NoBuild -Port COM6
+
+Build + flash only (no monitor):
+.\flash.ps1 -NoMonitor -Port COM5
+
+Safe monitor after reset:
+.\monitor-safe.ps1 -Port COM5 -DurationSeconds 30
+
+setup envior
+$env:IDF_TOOLS_PATH='<PATH_TO>\.espressif'; $env:IDF_PATH='<PATH_TO>\.espressif\v5.5.3\esp-idf'; . "$env:IDF_PATH\export.ps1"
