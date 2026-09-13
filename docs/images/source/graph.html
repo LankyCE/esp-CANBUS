@@ -1,0 +1,43 @@
+<meta charset="utf-8"><link rel="stylesheet" href="common.css">
+<div class="scr">
+  <div class="title">CAN Decoder</div>
+  <div class="tabs"><div class="tab off">Diagnostics</div><div class="tab on">Graph</div></div>
+  <div class="page">
+    <div class="lbl" style="left:8px;top:8px;font-size:28px;line-height:34px;font-weight:600">Base Y Position</div>
+    <div class="lbl" style="left:8px;top:50px;font-size:48px;line-height:58px;font-weight:600;color:#2E8B57">FORWARD</div>
+    <div class="lbl" style="right:8px;left:auto;top:50px;font-size:48px;line-height:58px;font-weight:600;color:#2E8B57">612</div>
+    <div class="lbl" style="left:8px;top:112px;color:#2E8B57">Interpreting CAN 0x0CFDD635  PGN 0x0FDD6  Center(0x35)</div>
+    <svg id="chart" style="position:absolute;left:8px;top:146px" width="764" height="250"></svg>
+  </div>
+</div>
+<script>
+const W=640,H=236,X0=44,Y0=7;
+const s=document.getElementById('chart');
+const ns='http://www.w3.org/2000/svg';
+function el(n,a){const e=document.createElementNS(ns,n);for(const k in a)e.setAttribute(k,a[k]);return e;}
+s.appendChild(el('rect',{x:X0,y:Y0,width:W,height:H,fill:'#ECEFE7',stroke:'#7A7A7A','stroke-width':1}));
+for(let i=1;i<6;i++){const y=Y0+H*i/6;s.appendChild(el('line',{x1:X0,y1:y,x2:X0+W,y2:y,stroke:'#B0B0B0','stroke-width':1}));}
+for(let i=1;i<6;i++){const x=X0+W*i/6;s.appendChild(el('line',{x1:x,y1:Y0,x2:x,y2:Y0+H,stroke:'#B0B0B0','stroke-width':1}));}
+for(let i=0;i<7;i++){const v=1023-i*341,y=Y0+H*i/6;
+  s.appendChild(el('line',{x1:X0-6,y1:y,x2:X0,y2:y,stroke:'#202020','stroke-width':1}));
+  const t=el('text',{x:X0-9,y:y+4,'text-anchor':'end','font-size':12,fill:'#202020','font-family':'Montserrat,Segoe UI,Arial'});
+  t.textContent=v;s.appendChild(t);}
+for(let i=0;i<6;i++){const x=X0+W*i/5,y=Y0+H;
+  s.appendChild(el('line',{x1:x,y1:y-8,x2:x,y2:y,stroke:'#202020','stroke-width':1}));
+  const t=el('text',{x:x,y:y-12,'text-anchor':'middle','font-size':12,fill:'#202020','font-family':'Montserrat,Segoe UI,Arial'});
+  t.textContent=(-30+i*6)+'s';s.appendChild(t);}
+const N=150,pts=[];
+for(let i=0;i<N;i++){
+  let v;
+  if(i<42) v=0;
+  else if(i<70) v=-Math.round(430*Math.sin((i-42)/28*Math.PI));
+  else if(i<92) v=0;
+  else if(i<120) v=Math.round(612*(i-92)/28);
+  else v=612+Math.round(9*Math.sin(i*0.9));
+  pts.push((X0+W*i/(N-1)).toFixed(1)+','+(Y0+H*(1023-v)/2046).toFixed(1));
+}
+s.appendChild(el('polyline',{points:pts.join(' '),fill:'none',stroke:'#2E8B57','stroke-width':2,'stroke-linejoin':'round'}));
+[['FORWARD','#2E8B57',12],['NEUTRAL','#1F5AA6',H/2+5],['REVERSE','#C0392B',H-6]].forEach(([txt,c,y])=>{
+  const t=el('text',{x:X0+W+16,y:y,'font-size':13,fill:c,'font-family':'Montserrat,Segoe UI,Arial','font-weight':600});
+  t.textContent=txt;s.appendChild(t);});
+</script>
